@@ -72,7 +72,7 @@ jobs:
             token: ${{ secrets.GIT_ACCESS_TOKEN }}
             
         - name: Update Application Container
-          run: sed -i "s|${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_ID }}:[^ ]*|${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_ID }}:|" spring-boot-test-app/api-deployment.yaml
+          run: sed -i "s|${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_ID }}:[^ ]*|${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_ID }}:${{ env.tag }}|" spring-boot-test-app/api-deployment.yml
   
         - name: Git Push
           run: |
