@@ -76,6 +76,6 @@ jobs:
   
         - name: Git Push
           run: |
-            git add spring-boot-test-app/api-deployment.yaml
+            git add spring-boot-test-app/api-deployment.yml
             git commit -m "feat: Image ${{ steps.meta.outputs.tags }}"
             git push origin main
