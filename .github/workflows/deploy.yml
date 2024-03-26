@@ -60,7 +60,7 @@ jobs:
         uses: actions/checkout@master
         with:
           repository: Aftermoon-dev/k8s-argocd
-          token: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+          token: ${{ secrets.GIT_ACCESS_TOKEN }}
           
       - name: Update Application Container
         run: sed -i "s|${{ steps.meta.outputs.labels }}:[^ ]*|${{ steps.meta.outputs.labels }}:${{ steps.meta.outputs.tags }}|" spring-boot-test-app/api-deployment.yaml
