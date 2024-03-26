@@ -53,7 +53,7 @@ jobs:
 
       - name: Git Config
         run: |
-          git config --global user.email "g"
+          git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Action"
 
       - name: Checkout K8s Resource Repository
@@ -63,7 +63,7 @@ jobs:
           token: ${{ secrets.GIT_ACCESS_TOKEN }}
           
       - name: Update Application Container
-        run: sed -i "s|${{ steps.meta.outputs.labels }}:[^ ]*|${{ steps.meta.outputs.labels }}:${{ steps.meta.outputs.tags }}|" spring-boot-test-app/api-deployment.yaml
+        run: sed -i "s|${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_ID }}:[^ ]*|${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_ID }}:${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}|" spring-boot-test-app/api-deployment.yaml
 
       - name: Git Push
         run: |
