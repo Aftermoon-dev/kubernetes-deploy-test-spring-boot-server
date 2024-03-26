@@ -12,6 +12,8 @@ jobs:
   build:
     name: Build & Docker Push
     runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -55,6 +57,8 @@ jobs:
     name: Update GitOps Repository
     needs: build
     runs-on: ubuntu-latest
+    env:
+      tag: ${{ needs.build.outputs.tag }}
     steps:
         - name: Git Config
           run: |
@@ -68,7 +72,7 @@ jobs:
             token: ${{ secrets.GIT_ACCESS_TOKEN }}
             
         - name: Update Application Container
-          run: sed -i "s|${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_ID }}:[^ ]*|${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_ID }}:${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}|" spring-boot-test-app/api-deployment.yaml
+          run: sed -i "s|${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_ID }}:[^ ]*|${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_ID }}:|" spring-boot-test-app/api-deployment.yaml
   
         - name: Git Push
           run: |
